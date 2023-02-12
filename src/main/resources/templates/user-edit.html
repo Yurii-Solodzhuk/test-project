@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <p>User editor</p>
+  <form th:action="@{/user}" method="post">
+    <input th:type="hidden" th:value="${user.id}" th:name="userId">
+    <input th:type="text" th:value="${user.email}" th:name="email">
+    <input th:type="text" th:value="${user.name}" th:name="name">
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>
