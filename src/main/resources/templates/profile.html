@@ -2,9 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>My Profile</title>
+    <link th:href="@{/static/style.css}" rel="stylesheet" />
 </head>
 <body>
-    <div>Avatar</div>
+<span><a href="/user">User list</a></span>
+    <div>
+        <p>Avatar</p>
+        <div th:if="${user.avatar}">
+            <img th:src="@{${'/img/' + user.avatar}}">
+        </div>
+    </div>
+    <div>
+        <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+            <input type="file" name="avatar">
+            <button type="submit">Upload avatar</button>
+        </form>
+    </div>
     <p th:text="${user.id}"/>
     <p th:text="${user.name}"/>
     <p th:text="${user.email}"/>
