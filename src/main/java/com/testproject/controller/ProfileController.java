@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +27,8 @@ public class ProfileController {
     private UserRepository userRepository;
 
     @GetMapping
-    public String getMyPage(@AuthenticationPrincipal User user, Model model) {
+    public String getMyPage(@AuthenticationPrincipal User currentUser, Model model) {
+        User user = userRepository.findById(currentUser.getId()).get();
         model.addAttribute("user", user);
         return "profile";
     }
@@ -46,6 +48,15 @@ public class ProfileController {
             userRepository.save(user);
 
         }
+        return "redirect:/";
+    }
+
+    @PostMapping(path = "/edit")
+    public String submitForm(@AuthenticationPrincipal User currentUser,
+                             User userFromForm) {
+        User user = userRepository.findById(currentUser.getId()).get();
+        user.setBio(userFromForm.getBio());
+        userRepository.save(user);
         return "redirect:/";
     }
 }

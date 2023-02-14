@@ -14,7 +14,7 @@
     text-align: center;
 }
 
-.registration-inputs .input-group-text {
+.registration-inputs .input-group-text, .user-settings .input-group-text{
     width: 110px;
 }
 
@@ -64,3 +64,48 @@
 .user-info label {
     color: #0d6efd;
 }
+
+.user-settings .browse-avatar {
+    border-radius:5px!important;
+}
+
+.user-info .card-body {
+    padding: 0;
+}
+
+.user-info #saveBio{
+    display: none;
+    margin-top: 5px;
+}
+
+.user-info textarea {
+    cursor: pointer;
+    width: 100%;
+    padding: 0 10px 0 10px;
+    background-color: #e3f2fd;
+    border: 1px solid darkgrey;
+    border-radius: 5px;
+    height: 150px;
+    width: 100%;
+}
+
+.user-info textarea {
+    transition: all 0.5s ease;
+}
+
+.user-info textarea:hover {
+    border: 10px solid #E0E8EA;
+    background-color: #E0E8EA;
+}
+
+.hover-text {
+    display: none;
+    color: 	rgba(13, 110, 253, 0.5);
+    margin-top: -90px;
+    text-align: center;
+}
+
+.user-info textarea:hover ~ .hover-text {
+    display: block;
+}
+

@@ -33,9 +33,14 @@
                     <label for="phoneNumber">Phone Number : </label>
                     <span th:text="${user.phoneNumber}" id="phoneNumber"/><br/><br/>
                     <label>About me :</label>
-                    <div class="card mt-1">
-                        <div th:text="${user.bio}" class="card-body"></div>
-                    </div>
+                            <form th:action="@{/edit}" th:object="${user}" method="post">
+                                <textarea th:field="*{bio}" name="bio" id="bio"
+                                          onclick="document.getElementById('saveBio').style.display = 'block';
+                                      document.getElementById('hover-text').style.display = 'none';"></textarea>
+                                <button class="btn btn-primary" id="saveBio" type="submit">Save</button>
+                                <span class="hover-text" id="hover-text"
+                                      onclick="document.getElementById('bio').focus();">Click to edit...</span>
+                            </form>
                 </div>
             </div>
         </div>
