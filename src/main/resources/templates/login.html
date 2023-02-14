@@ -10,7 +10,7 @@
   <div th:replace="fragments/fragments :: guest-header"></div>
   <div class="d-flex justify-content-center mt-5">
       <div class="error-msg" th:if="${param.error}">
-          Invalid username and password.
+          Invalid username or password.
       </div>
       <div class="info-msg" th:if="${param.logout}">
           You have been logged out.

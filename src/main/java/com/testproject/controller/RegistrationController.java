@@ -37,6 +37,7 @@ public class RegistrationController {
 
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(Role.USER));
+        user.setAvatar("defaultAvatar.jpeg");
         userRepository.save(user);
         return "redirect:/login";
     }

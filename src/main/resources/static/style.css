@@ -21,3 +21,34 @@
 .input-group{
     width: 400px!important;
 }
+
+.card form {
+    /*margin-top: -2em;*/
+}
+
+.card img {
+    border-radius: 0 0 5px 5px;
+}
+
+.browse-avatar {
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    /*height: 32px;*/
+    /*border-radius: 0 0 5px 5px;*/
+    /*opacity: 0;*/
+    /*transition: all 0.5s ease;*/
+    margin-top: -5px;
+    border-radius: 0 0 5px 5px!important;
+}
+/*.browse-avatar:hover {*/
+/*    opacity: 1;*/
+/*    background-color: rgba(227, 242, 253, 0.6);*/
+/*    color: #0d6efd;*/
+/*}*/
+
+#upload-photo {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}

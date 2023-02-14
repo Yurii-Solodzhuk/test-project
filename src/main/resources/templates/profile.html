@@ -15,11 +15,10 @@
                 <div class="card" style="width: 18rem;">
                     <div th:if="${user.avatar}">
                         <img th:src="@{${'/img/' + user.avatar}}" class="card-img-top" alt="Avatar">
-                    </div>
-                    <div class="card-body">
                         <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-                            <input type="file" name="avatar">
-                            <button class="btn btn-primary" type="submit">Upload avatar</button>
+                            <label th:text="${user.avatar == 'defaultAvatar.jpeg'} ? 'Upload avatar' : 'Change avatar'"
+                                   class="browse-avatar btn btn-primary" for="upload-photo"></label>
+                            <input type="file" name="avatar" id="upload-photo" onchange="form.submit()"/>
                         </form>
                     </div>
                 </div>
