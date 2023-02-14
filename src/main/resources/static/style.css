@@ -15,7 +15,7 @@
 }
 
 .registration-inputs .input-group-text {
-    width: 80px;
+    width: 110px;
 }
 
 .input-group{
@@ -51,4 +51,16 @@
     opacity: 0;
     position: absolute;
     z-index: -1;
+}
+
+.user-info h4 {
+    color: #000000A6;
+}
+
+.user-info .card-body {
+    background-color: #e3f2fd;
+}
+
+.user-info label {
+    color: #0d6efd;
 }

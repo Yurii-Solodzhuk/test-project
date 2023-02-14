@@ -1,6 +1,5 @@
 package com.testproject.controller;
 
-import com.testproject.model.Role;
 import com.testproject.model.User;
 import com.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +31,10 @@ public class UserController {
     @PostMapping
     public String saveUser(@RequestParam("userId") User user,
                            @RequestParam String email,
-                           @RequestParam String name) {
+                           @RequestParam String firstName) {
 
         user.setEmail(email);
-        user.setName(name);
+        user.setFirstName(firstName);
         userRepository.save(user);
         return "redirect:/user";
     }

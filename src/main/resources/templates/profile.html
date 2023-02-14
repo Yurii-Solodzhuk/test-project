@@ -25,9 +25,18 @@
             </div>
 
             <div class="col">
-                <h1>Your information</h1>
-                <p th:text="${user.name}"/>
-                <p th:text="${user.email}"/>
+                <div class="user-info">
+                    <h1 th:text="${user.firstName} + ' ' + ${user.lastName}"/>
+                    <h4>Your information</h4>
+                    <label for="email">Email : </label>
+                    <span th:text="${user.email}" id="email"/> <br/>
+                    <label for="phoneNumber">Phone Number : </label>
+                    <span th:text="${user.phoneNumber}" id="phoneNumber"/><br/><br/>
+                    <label>About me :</label>
+                    <div class="card mt-1">
+                        <div th:text="${user.bio}" class="card-body"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
