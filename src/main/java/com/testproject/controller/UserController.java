@@ -4,11 +4,14 @@ import com.testproject.model.Role;
 import com.testproject.model.User;
 import com.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/user")
@@ -20,8 +23,11 @@ public class UserController {
 
     @GetMapping
     public String getUserList(@AuthenticationPrincipal User currentUser,
-                              Model model) {
-        model.addAttribute("users", userRepository.findAll());
+                              Model model,
+                              @RequestParam(value = "page", required = false, defaultValue = "0") Integer page) {
+        Page<User> pageUsers = userRepository.findAll(PageRequest.of(page, 10));
+        model.addAttribute("usersPage", pageUsers);
+        model.addAttribute("numbers", IntStream.range(0, pageUsers.getTotalPages()).toArray());
         boolean isAdmin = currentUser.getRoles().contains(Role.ADMIN);
         model.addAttribute("isAdmin", isAdmin);
         return "user-list";
