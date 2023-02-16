@@ -10,39 +10,57 @@
   <div th:replace="fragments/fragments :: guest-header"></div>
   <div class="container">
     <h2 class="registration-header mb-5">Registration form</h2>
-    <div th:if="${wanrMessage}">
-      <p th:text="${wanrMessage}"/>
+    <div class="d-flex justify-content-center" th:if="${errorMessage}" style="color:red">
+      <p th:text="${errorMessage}"/>
     </div>
-    <form th:action="@{/registration}" method="post">
+    <form th:action="@{/registration}" th:object="${userRegistrationDto}" method="post">
       <div class="registration-inputs">
         <div class="d-flex justify-content-center">
           <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="firstName">First Name</span>
-            <input class="form-control" type="text" name="firstName" aria-describedby="firstName">
+            <input class="form-control" type="text" name="firstName" th:field="*{firstName}"
+                   aria-describedby="firstName" th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="invalid-feedback"></div>
           </div>
         </div>
         <div class="d-flex justify-content-center">
           <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="lastName">Last Name</span>
-            <input class="form-control" type="text" name="lastName" aria-describedby="lastName">
+            <input class="form-control" type="text" name="lastName" th:field="*{lastName}"
+                   aria-describedby="lastName" th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="invalid-feedback"></div>
           </div>
         </div>
         <div class="d-flex justify-content-center">
           <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="phoneNumber">Phone Number</span>
-            <input class="form-control" type="text" name="phoneNumber" aria-describedby="phoneNumber">
+            <input class="form-control" type="text" name="phoneNumber" th:field="*{phoneNumber}"
+                   aria-describedby="phoneNumber" th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="invalid-feedback"></div>
           </div>
         </div>
         <div class="d-flex justify-content-center">
           <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="email">Email</span>
-            <input class="form-control" type="text" name="email" aria-describedby="email">
+            <input class="form-control" type="text" name="email" th:field="*{email}"
+                   aria-describedby="email" th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
           </div>
         </div>
         <div class="d-flex justify-content-center">
           <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="password">Password</span>
-            <input class="form-control" type="text" name="password" aria-describedby="password">
+            <input class="form-control" type="text" name="password" th:field="*{password}"
+                   aria-describedby="password" th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="repeatPassword">Repeat Password</span>
+            <input class="form-control" type="text" name="repeatPassword" th:field="*{repeatPassword}"
+                   aria-describedby="repeatPassword" th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}" class="invalid-feedback"></div>
           </div>
         </div>
       </div>

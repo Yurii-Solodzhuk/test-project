@@ -1,5 +1,6 @@
 package com.testproject.controller;
 
+import com.testproject.dto.UserDto;
 import com.testproject.mapper.UserMapper;
 import com.testproject.model.User;
 import com.testproject.service.UserService;
@@ -29,14 +30,14 @@ public class ProfileController {
 
     @PostMapping("/upload")
     public String uploadAvatar(@RequestParam("avatar") MultipartFile multipartFile,
-                              @AuthenticationPrincipal User user) throws IOException {
-        userService.addUserAvatar(user, multipartFile);
+                              @AuthenticationPrincipal User currentUser) throws IOException {
+        userService.addUserAvatar(currentUser, multipartFile);
         return "redirect:/";
     }
 
     @PostMapping(path = "/edit")
-    public String editUserBio(@AuthenticationPrincipal User currentUser, User userFromForm) {
-        userService.editUserBio(currentUser.getId(), userFromForm.getBio());
+    public String editUserBio(@AuthenticationPrincipal User currentUser, UserDto userDto) {
+        userService.editUserBio(currentUser.getId(), userDto.getBio());
         return "redirect:/";
     }
 }

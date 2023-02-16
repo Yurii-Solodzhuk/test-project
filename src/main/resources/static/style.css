@@ -14,11 +14,15 @@
     text-align: center;
 }
 
-.registration-inputs .input-group-text, .user-settings .input-group-text, .edit-user .input-group-text {
+.edit-user .input-group-text {
     width: 110px;
 }
 
-.input-group{
+.registration-inputs .input-group-text, .user-settings .input-group-text {
+    width: 130px;
+}
+
+.input-group {
     width: 400px!important;
 }
 
@@ -111,5 +115,11 @@
 
 .edit-page-btns {
     width: 170px;
+}
+
+.invalid-feedback {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
 }
 

@@ -1,5 +1,7 @@
 package com.testproject.controller;
 
+import com.testproject.dto.UserDto;
+import com.testproject.mapper.UserMapper;
 import com.testproject.model.Role;
 import com.testproject.model.User;
 import com.testproject.service.UserService;
@@ -34,18 +36,18 @@ public class UserController {
 
     @GetMapping("{user}")
     public String getUserEditForm(@PathVariable User user, Model model) {
-        model.addAttribute("user", user);
+        model.addAttribute("user", UserMapper.INSTANCE.toDto(user));
         return "user-edit";
     }
 
-    @PostMapping
-    public String editUser(@RequestParam("userId") User user,
-                           @RequestParam String firstName,
-                           @RequestParam String lastName,
-                           @RequestParam String phoneNumber,
-                           @RequestParam String email) {
-
-        userService.editUser(user, firstName, lastName, phoneNumber, email);
+    @PostMapping("{userId}")
+    public String editUser(@PathVariable Long userId, @ModelAttribute UserDto userDto, Model model) {
+        if (!userService.isEmailValid(userDto.getEmail())){
+            model.addAttribute("user", UserMapper.INSTANCE.toDto(userService.findUserById(userId)));
+            model.addAttribute("errorMessage", "Email is not valid or already exists!");
+            return "user-edit";
+        }
+        userService.editUser(userId, userDto);
         return "redirect:/user";
     }
 

@@ -12,8 +12,10 @@
     <div class="container">
         <h1>User editor</h1>
         <div class="edit-user">
-            <form th:action="@{/user}" method="post">
-                <input type="hidden" th:value="${user.id}" name="userId">
+            <div class="d-flex justify-content-center" th:if="${errorMessage}" style="color:red">
+                <p th:text="${errorMessage}"/>
+            </div>
+            <form th:action="@{${'/user/' + user.id}}" method="post">
                 <div class="d-flex justify-content-center">
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text" id="firstName">First Name</span>
