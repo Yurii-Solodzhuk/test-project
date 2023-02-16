@@ -1,26 +1,18 @@
 package com.testproject.controller;
 
-import com.testproject.model.Role;
 import com.testproject.model.User;
-import com.testproject.repository.UserRepository;
+import com.testproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Collection;
-import java.util.Collections;
-
 @Controller
 public class RegistrationController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @GetMapping("/registration")
     public String getRegistrationPage() {
@@ -29,15 +21,12 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registerUser(User user, Model model) {
-        User userFromDB = userRepository.findUserByEmail(user.getEmail());
+        User userFromDB = userService.findUserByEmail(user.getEmail());
         if (userFromDB != null){
-            model.addAttribute("wanrMessage", "User exists!");
+            model.addAttribute("wanrMessage", "User already exists!");
             return "registration";
         }
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(Role.USER));
-        user.setAvatar("defaultAvatar.jpeg");
-        userRepository.save(user);
+        userService.registerUser(user);
         return "redirect:/login";
     }
 }

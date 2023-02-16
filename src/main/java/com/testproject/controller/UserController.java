@@ -2,10 +2,9 @@ package com.testproject.controller;
 
 import com.testproject.model.Role;
 import com.testproject.model.User;
-import com.testproject.repository.UserRepository;
+import com.testproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,17 +18,17 @@ import java.util.stream.IntStream;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
     public String getUserList(@AuthenticationPrincipal User currentUser,
-                              Model model,
-                              @RequestParam(value = "page", required = false, defaultValue = "0") Integer page) {
-        Page<User> pageUsers = userRepository.findAll(PageRequest.of(page, 10));
+                              @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                              Model model) {
+        Page<User> pageUsers = userService.findAll(page);
         model.addAttribute("usersPage", pageUsers);
         model.addAttribute("numbers", IntStream.range(0, pageUsers.getTotalPages()).toArray());
-        boolean isAdmin = currentUser.getRoles().contains(Role.ADMIN);
-        model.addAttribute("isAdmin", isAdmin);
+
+        model.addAttribute("isAdmin", currentUser.getRoles().contains(Role.ADMIN));
         return "user-list";
     }
 
@@ -40,23 +39,19 @@ public class UserController {
     }
 
     @PostMapping
-    public String saveUser(@RequestParam("userId") User user,
+    public String editUser(@RequestParam("userId") User user,
                            @RequestParam String firstName,
                            @RequestParam String lastName,
                            @RequestParam String phoneNumber,
                            @RequestParam String email) {
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setPhoneNumber(phoneNumber);
-        user.setEmail(email);
-        userRepository.save(user);
+        userService.editUser(user, firstName, lastName, phoneNumber, email);
         return "redirect:/user";
     }
 
     @GetMapping("/delete")
-    public String delete(@RequestParam("userId") Long userId){
-        userRepository.deleteById(userId);
+    public String deleteUser(@RequestParam("userId") Long userId){
+        userService.deleteUser(userId);
         return "redirect:/user";
     }
 }
