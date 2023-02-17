@@ -1,5 +1,6 @@
 package com.testproject.controller;
 
+import com.testproject.annotation.CurrentUserId;
 import com.testproject.dto.UserRegistrationDto;
 import com.testproject.mapper.UserMapper;
 import com.testproject.model.User;
@@ -18,8 +19,8 @@ public class SettingsController {
     private UserService userService;
 
     @GetMapping("/settings")
-    public String getSettingsPage(@AuthenticationPrincipal User currentUser, Model model) {
-        User user = userService.findUserById(currentUser.getId());
+    public String getSettingsPage(@CurrentUserId Long userId, Model model) {
+        User user = userService.findUserById(userId);
         model.addAttribute("user", UserMapper.INSTANCE.toDto(user));
         return "settings";
     }
@@ -27,7 +28,7 @@ public class SettingsController {
     @PostMapping("/save")
     public String changeUserData(@AuthenticationPrincipal User currentUser, UserRegistrationDto userRegistrationDto,
                                  Model model) {
-        if (!userService.isEmailValid(userRegistrationDto.getEmail())){
+        if (!userRegistrationDto.getEmail().isEmpty() && !userService.isEmailValid(userRegistrationDto.getEmail())){
             model.addAttribute("user", UserMapper.INSTANCE.toDto(currentUser));
             model.addAttribute("errorMessage", "Email is not valid or already exists!");
             return "settings";

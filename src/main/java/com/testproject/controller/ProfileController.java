@@ -1,5 +1,6 @@
 package com.testproject.controller;
 
+import com.testproject.annotation.CurrentUserId;
 import com.testproject.dto.UserDto;
 import com.testproject.mapper.UserMapper;
 import com.testproject.model.User;
@@ -22,8 +23,8 @@ public class ProfileController {
     private UserService userService;
 
     @GetMapping
-    public String getMyPage(@AuthenticationPrincipal User currentUser, Model model) {
-        User user = userService.findUserById(currentUser.getId());
+    public String getMyPage(@CurrentUserId Long userId, Model model) {
+        User user = userService.findUserById(userId);
         model.addAttribute("user", UserMapper.INSTANCE.toDto(user));
         return "profile";
     }
@@ -36,8 +37,8 @@ public class ProfileController {
     }
 
     @PostMapping(path = "/edit")
-    public String editUserBio(@AuthenticationPrincipal User currentUser, UserDto userDto) {
-        userService.editUserBio(currentUser.getId(), userDto.getBio());
+    public String editUserBio(@CurrentUserId Long userId, UserDto userDto) {
+        userService.editUserBio(userId, userDto.getBio());
         return "redirect:/";
     }
 }
