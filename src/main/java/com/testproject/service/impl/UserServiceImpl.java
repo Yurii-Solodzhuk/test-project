@@ -10,15 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import org.springframework.security.access.AccessDeniedException;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +46,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public void registerUser(UserRegistrationDto userRegistrationDto) {
         User user = new User();
         user.setFirstName(userRegistrationDto.getFirstName());
@@ -65,10 +69,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editUser(Long userId, UserDto userDto) {
         User user = userRepository.findById(userId).get();
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setEmail(userDto.getEmail());
+        if (!userDto.getFirstName().isEmpty())
+            user.setFirstName(userDto.getFirstName());
+        if (!userDto.getLastName().isEmpty())
+            user.setLastName(userDto.getLastName());
+        if (!userDto.getPhoneNumber().isEmpty())
+            user.setPhoneNumber(userDto.getPhoneNumber());
+        if (!userDto.getEmail().isEmpty())
+            user.setEmail(userDto.getEmail());
         userRepository.save(user);
     }
 
@@ -77,6 +85,11 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findById(userId).isPresent()) {
             userRepository.deleteById(userId);
         }
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     @Override
@@ -134,6 +147,23 @@ public class UserServiceImpl implements UserService {
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    @Override
+    public String validateInputData(UserRegistrationDto userRegistrationDto) {
+        if (userRegistrationDto.getFirstName().isEmpty())
+            return "Enter your first name";
+        if (userRegistrationDto.getLastName().isEmpty())
+            return "Enter your last name";
+        if (userRegistrationDto.getPhoneNumber().isEmpty())
+            return "Enter your phone number";
+        if (userRegistrationDto.getEmail().isEmpty())
+            return "Enter your email";
+        if (userRegistrationDto.getPassword().isEmpty())
+            return "Enter your password";
+        if (userRegistrationDto.getRepeatPassword().isEmpty())
+            return "Repeat your password";
+        return "";
     }
 
 
