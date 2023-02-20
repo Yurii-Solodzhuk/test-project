@@ -21,7 +21,7 @@ public interface UserService {
     void save(User user);
     Page<User> findAll(Integer page);
     void editUserBio(Long userId, String userBio);
-    void addUserAvatar(User user, MultipartFile multipartFile) throws IOException;
+    void addUserAvatar(Long userId, MultipartFile multipartFile) throws IOException;
     void changeUserData(Long id, UserRegistrationDto userRegistrationDto);
     boolean isEmailValid(String email);
     String validateInputData(UserRegistrationDto userRegistrationDto);

@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/user")
-//@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
     @Autowired
@@ -42,7 +41,9 @@ public class UserController {
 
     @PostMapping("{userId}")
     public String editUser(@PathVariable Long userId, @ModelAttribute UserDto userDto, Model model) {
-        if (!userService.isEmailValid(userDto.getEmail())){
+        User userByEmail = userService.findUserByEmail(userDto.getEmail());
+        boolean isEmailAlreadyExists = userByEmail != null && !userDto.getEmail().equals(userService.findUserById(userId).getEmail());
+        if (!userService.isEmailValid(userDto.getEmail()) || isEmailAlreadyExists){
             model.addAttribute("user", UserMapper.INSTANCE.toDto(userService.findUserById(userId)));
             model.addAttribute("errorMessage", "Email is not valid or already exists!");
             return "user-edit";

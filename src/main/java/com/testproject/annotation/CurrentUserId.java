@@ -1,6 +1,5 @@
 package com.testproject.annotation;
 
-import javax.validation.Constraint;
 import java.lang.annotation.*;
 
 @Target(ElementType.PARAMETER)

@@ -6,7 +6,6 @@ import com.testproject.mapper.UserMapper;
 import com.testproject.model.User;
 import com.testproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +30,8 @@ public class ProfileController {
 
     @PostMapping("/upload")
     public String uploadAvatar(@RequestParam("avatar") MultipartFile multipartFile,
-                              @AuthenticationPrincipal User currentUser) throws IOException {
-        userService.addUserAvatar(currentUser, multipartFile);
+                              @CurrentUserId Long userId) throws IOException {
+        userService.addUserAvatar(userId, multipartFile);
         return "redirect:/";
     }
 

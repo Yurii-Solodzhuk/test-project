@@ -22,11 +22,13 @@
               <div class="card-body">
                 <h5 class="card-title">This is your avatar</h5>
                 <p th:text="${user.avatar == 'defaultAvatar.jpeg'} ? 'You can add it here.' : 'You can change it here.'" class="card-text"></p>
+                <form th:action="@{/upload-avatar}" method="post" enctype="multipart/form-data">
                 <p class="card-text"><small class="text-muted">
                   <label th:text="${user.avatar == 'defaultAvatar.jpeg'} ? 'Upload avatar' : 'Change avatar'"
                          class="browse-avatar btn btn-primary" for="upload-photo"></label>
                   <input type="file" name="avatar" id="upload-photo" onchange="form.submit()"/>
                 </small></p>
+                </form>
               </div>
             </div>
           </div>

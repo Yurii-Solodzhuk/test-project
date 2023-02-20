@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,13 +58,12 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userRegistrationDto.getLastName());
         user.setPhoneNumber(userRegistrationDto.getPhoneNumber());
         user.setEmail(userRegistrationDto.getEmail());
-        user.setPassword(userRegistrationDto.getPassword());
-//        user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
         if (userRegistrationDto.getPassword().equals("admin"))
             user.setRoles(Collections.singleton(Role.ADMIN));
         else user.setRoles(Collections.singleton(Role.USER));
         user.setAvatar("defaultAvatar.jpeg");
-        userRepository.save(user);
+        save(user);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
             user.setPhoneNumber(userDto.getPhoneNumber());
         if (!userDto.getEmail().isEmpty())
             user.setEmail(userDto.getEmail());
-        userRepository.save(user);
+        save(user);
     }
 
     @Override
@@ -101,11 +101,12 @@ public class UserServiceImpl implements UserService {
     public void editUserBio(Long userId, String userBio) {
         User user = userRepository.findById(userId).get();
         user.setBio(userBio);
-        userRepository.save(user);
+        save(user);
     }
 
     @Override
-    public void addUserAvatar(User user, MultipartFile multipartFile) throws IOException {
+    public void addUserAvatar(Long userId, MultipartFile multipartFile) throws IOException {
+        User user = findUserById(userId);
         if (multipartFile != null && !multipartFile.getOriginalFilename().isEmpty()){
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists())
@@ -115,7 +116,7 @@ public class UserServiceImpl implements UserService {
             multipartFile.transferTo(new File(uploadPath + "/" + resultFilename));
 
             user.setAvatar(resultFilename);
-            userRepository.save(user);
+            save(user);
 
         }
     }
@@ -133,16 +134,13 @@ public class UserServiceImpl implements UserService {
             if (!userRegistrationDto.getPhoneNumber().isEmpty())
                 user.setPhoneNumber(userRegistrationDto.getPhoneNumber());
             if (!userRegistrationDto.getPassword().isEmpty())
-                user.setPassword(userRegistrationDto.getPassword());
-            userRepository.save(user);
+                user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+            save(user);
         }
     }
 
     @Override
     public boolean isEmailValid(String email) {
-        User userByEmail = findUserByEmail(email);
-        if (userByEmail != null)
-            return false;
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);

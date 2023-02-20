@@ -42,6 +42,10 @@ public class RegistrationController {
             model.addAttribute("errorMessage", "User with such email already exists!");
             return "registration";
         }
+        if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getRepeatPassword())){
+            model.addAttribute("errorMessage", "Passwords are not match!");
+            return "registration";
+        }
         if (bindingResult.hasErrors())
             return "registration";
         userService.registerUser(userRegistrationDto);
