@@ -1,4 +1,4 @@
-Spring Boot application similar to a social network
+Spring Boot application
 
 <p align="center">
    <img src=https://img.shields.io/badge/Engine-Spring%20Boot%202.7.8-green" alt="Spring Boot Version">
